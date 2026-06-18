@@ -158,7 +158,7 @@ def main():
             base_url="https://openrouter.ai/api/v1",
             api_key=api_key,
         )
-        model = os.environ.get("TESS_MODEL", "qwen/qwen-2.5-coder-32b-instruct:free")
+        model = os.environ.get("TESS_MODEL", "qwen/qwen3-coder:free")
     except Exception as e:
         console.print(f"[bold red]Initialization Error:[/bold red] {e}")
         sys.exit(1)
