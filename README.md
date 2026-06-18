@@ -59,7 +59,19 @@ set OPENROUTER_API_KEY=your-key-here
 export OPENROUTER_API_KEY="your-key-here"
 ```
 
-### 2. Judge some code
+### 2. Change the Model (Optional)
+TESS uses `qwen/qwen3-coder:free` by default. If you want to use a different OpenRouter model (like Claude 3.5 Sonnet or GPT-4o), just set the `TESS_MODEL` environment variable before running it:
+
+**Windows (PowerShell):**
+```powershell
+$env:TESS_MODEL="anthropic/claude-3.5-sonnet"
+```
+**Linux/macOS:**
+```bash
+export TESS_MODEL="anthropic/claude-3.5-sonnet"
+```
+
+### 3. Judge some code
 Point it at a file, or just run it in an entire directory. Don't worry, I added a 150KB hard cap so you don't accidentally send your entire 2GB monorepo to the API:
 ```bash
 tess-review spaghetti_code.py
