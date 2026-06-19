@@ -116,5 +116,5 @@ else
     echo "  export OPENROUTER_API_KEY='your-key-here'"
 fi
 echo ""
-echo "Now you can just type 'tess' in your terminal to analyze your code!"
+echo "Now you can just type 'tess-review' in your terminal to analyze your code!"
 echo "==========================================="
