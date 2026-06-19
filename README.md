@@ -22,7 +22,9 @@ It's an interactive, completely overly-professional CLI code reviewer that lives
 
 ### Prerequisites
 - Python 3.8+ (Welcome to the present)
-- An OpenRouter API Key (It uses `qwen/qwen-2.5-coder-32b-instruct:free` by default because we like good code and we like keeping our money).
+- An API Key from either OpenRouter or Groq:
+  - **OpenRouter**: Default model is `qwen/qwen3-coder:free`.
+  - **Groq**: Default model is `qwen/qwen3-32B`.
 
 ### Setup
 
@@ -64,49 +66,59 @@ If you want `tess` to be globally accessible without managing shell aliases:
 
 ## 🚀 Usage
 
-### 1. Give it the API Key
-It needs to eat. Feed it your OpenRouter API key via environment variables:
+### 1. Configure your LLM Provider and API Key
+It needs to eat. Configure the active provider and its API key via environment variables.
 
+#### Option A: OpenRouter (Default)
 **Windows (PowerShell):**
 ```powershell
+$env:TESS_PROVIDER="openrouter"
 $env:OPENROUTER_API_KEY="your-key-here"
 ```
 
 **Windows (CMD):**
 ```cmd
+set TESS_PROVIDER=openrouter
 set OPENROUTER_API_KEY=your-key-here
 ```
 
 **macOS/Linux (Zsh - Default):**
 ```bash
-# Temporary (current session only):
+export TESS_PROVIDER="openrouter"
 export OPENROUTER_API_KEY="your-key-here"
-
-# Persistent (applies to all new terminal sessions):
-echo 'export OPENROUTER_API_KEY="your-key-here"' >> ~/.zshrc
-source ~/.zshrc
 ```
 
-**macOS/Linux (Bash):**
+#### Option B: Groq
+**Windows (PowerShell):**
+```powershell
+$env:TESS_PROVIDER="groq"
+$env:GROQ_API_KEY="your-key-here"
+```
+
+**Windows (CMD):**
+```cmd
+set TESS_PROVIDER=groq
+set GROQ_API_KEY=your-key-here
+```
+
+**macOS/Linux (Zsh - Default):**
 ```bash
-# Temporary (current session only):
-export OPENROUTER_API_KEY="your-key-here"
-
-# Persistent (applies to all new terminal sessions):
-echo 'export OPENROUTER_API_KEY="your-key-here"' >> ~/.bashrc
-source ~/.bashrc
+export TESS_PROVIDER="groq"
+export GROQ_API_KEY="your-key-here"
 ```
+
+*(Note: If `TESS_PROVIDER` is not set, TESS will automatically detect which provider to use based on the presence of `GROQ_API_KEY` or `OPENROUTER_API_KEY`.)*
 
 ### 2. Change the Model (Optional)
-TESS uses `qwen/qwen3-coder:free` by default. If you want to use a different OpenRouter model (like Claude 3.5 Sonnet or GPT-4o), just set the `TESS_MODEL` environment variable before running it:
+TESS defaults to `qwen/qwen3-coder:free` (OpenRouter) or `qwen/qwen3-32B` (Groq). If you want to use a different model, set the `TESS_MODEL` environment variable:
 
 **Windows (PowerShell):**
 ```powershell
-$env:TESS_MODEL="anthropic/claude-3.5-sonnet"
+$env:TESS_MODEL="your-chosen-model-id"
 ```
 **macOS/Linux:**
 ```bash
-export TESS_MODEL="anthropic/claude-3.5-sonnet"
+export TESS_MODEL="your-chosen-model-id"
 ```
 
 ### 3. Judge some code

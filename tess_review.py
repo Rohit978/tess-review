@@ -132,22 +132,45 @@ def main():
     parser.add_argument("file_path", nargs="?", help="Optional path to a specific file to review on startup")
     args = parser.parse_args()
 
-    api_key = os.environ.get("OPENROUTER_API_KEY")
-    if api_key:
-        api_key = api_key.strip()
+    provider = os.environ.get("TESS_PROVIDER", "").strip().lower()
+    
+    # Auto-detect if TESS_PROVIDER is not set
+    if not provider:
+        if os.environ.get("GROQ_API_KEY"):
+            provider = "groq"
+        elif os.environ.get("OPENROUTER_API_KEY"):
+            provider = "openrouter"
+        else:
+            provider = "openrouter"  # Default fallback
+
+    if provider == "groq":
+        api_key = os.environ.get("GROQ_API_KEY")
+        if api_key:
+            api_key = api_key.strip()
+        base_url = "https://api.groq.com/openai/v1"
+        default_model = "qwen/qwen3-32B"
+        env_var_name = "GROQ_API_KEY"
+    else:
+        api_key = os.environ.get("OPENROUTER_API_KEY")
+        if api_key:
+            api_key = api_key.strip()
+        base_url = "https://openrouter.ai/api/v1"
+        default_model = "qwen/qwen3-coder:free"
+        env_var_name = "OPENROUTER_API_KEY"
 
     print_welcome()
 
     if not api_key:
+        provider_name = "Groq" if provider == "groq" else "OpenRouter"
         console.print(Panel(
-            "[bold red]Configuration Error:[/]\n\n"
-            "The [bold yellow]OPENROUTER_API_KEY[/] environment variable is required but was not found.\n\n"
-            "Please set it in your terminal environment and try again:\n"
-            "  • PowerShell: [bold white]$env:OPENROUTER_API_KEY='your-key'[/]\n"
-            "  • CMD       : [bold white]set OPENROUTER_API_KEY=your-key[/]\n"
-            "  • Linux/macOS (Zsh/Bash): [bold white]export OPENROUTER_API_KEY='your-key'[/]\n"
-            "    * Persist in macOS (Zsh) : [bold white]echo \"export OPENROUTER_API_KEY='your-key'\" >> ~/.zshrc[/]\n"
-            "    * Persist in Linux (Bash): [bold white]echo \"export OPENROUTER_API_KEY='your-key'\" >> ~/.bashrc[/]",
+            f"[bold red]Configuration Error:[/]\n\n"
+            f"The [bold yellow]{env_var_name}[/] environment variable is required when using {provider_name} but was not found.\n\n"
+            f"Please set it in your terminal environment and try again:\n"
+            f"  • PowerShell: [bold white]$env:{env_var_name}='your-key'[/]\n"
+            f"  • CMD       : [bold white]set {env_var_name}=your-key[/]\n"
+            f"  • Linux/macOS (Zsh/Bash): [bold white]export {env_var_name}='your-key'[/]\n"
+            f"    * Persist in macOS (Zsh) : [bold white]echo \"export {env_var_name}='your-key'\" >> ~/.zshrc[/]\n"
+            f"    * Persist in Linux (Bash): [bold white]echo \"export {env_var_name}='your-key'\" >> ~/.bashrc[/]",
             border_style="red",
             title="Error",
             box=box.ROUNDED,
@@ -157,10 +180,10 @@ def main():
 
     try:
         client = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
+            base_url=base_url,
             api_key=api_key,
         )
-        model = os.environ.get("TESS_MODEL", "qwen/qwen3-coder:free")
+        model = os.environ.get("TESS_MODEL", default_model)
     except Exception as e:
         console.print(f"[bold red]Initialization Error:[/bold red] {e}")
         sys.exit(1)
