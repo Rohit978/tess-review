@@ -25,14 +25,37 @@ It's an interactive, completely overly-professional CLI code reviewer that lives
 - An OpenRouter API Key (It uses `qwen/qwen-2.5-coder-32b-instruct:free` by default because we like good code and we like keeping our money).
 
 ### Setup
+
+#### Option A: macOS & Linux (One-Click Virtual Env Installer)
+Modern macOS and Linux environments block global `pip` installation by default (PEP 668). We provide an `install.sh` script that automatically creates a Python virtual environment and installs the packages safely:
+
 1. Clone the repo (you know the drill):
    ```bash
    git clone https://github.com/yourusername/code-reviewer.git
    cd code-reviewer
    ```
-
-2. Install it locally:
+2. Run the installer:
    ```bash
+   chmod +x install.sh
+   ./install.sh
+   ```
+This will set up everything inside a local `.venv/` directory and print setup instructions for your shell.
+
+#### Option B: Global Install via pipx (Recommended for macOS/Linux)
+If you want `tess` to be globally accessible without managing shell aliases:
+1. Install `pipx` (if you don't have it):
+   ```bash
+   brew install pipx   # macOS
+   pipx ensurepath
+   ```
+2. Install TESS:
+   ```bash
+   pipx install .
+   ```
+
+#### Option C: Windows Install
+1. Clone the repo and run:
+   ```powershell
    pip install -e .
    ```
    *Boom.* Now you have `tess-review` and `tess` installed as global commands.
@@ -54,9 +77,24 @@ $env:OPENROUTER_API_KEY="your-key-here"
 set OPENROUTER_API_KEY=your-key-here
 ```
 
-**Linux/macOS:**
+**macOS/Linux (Zsh - Default):**
 ```bash
+# Temporary (current session only):
 export OPENROUTER_API_KEY="your-key-here"
+
+# Persistent (applies to all new terminal sessions):
+echo 'export OPENROUTER_API_KEY="your-key-here"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**macOS/Linux (Bash):**
+```bash
+# Temporary (current session only):
+export OPENROUTER_API_KEY="your-key-here"
+
+# Persistent (applies to all new terminal sessions):
+echo 'export OPENROUTER_API_KEY="your-key-here"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 ### 2. Change the Model (Optional)
@@ -66,7 +104,7 @@ TESS uses `qwen/qwen3-coder:free` by default. If you want to use a different Ope
 ```powershell
 $env:TESS_MODEL="anthropic/claude-3.5-sonnet"
 ```
-**Linux/macOS:**
+**macOS/Linux:**
 ```bash
 export TESS_MODEL="anthropic/claude-3.5-sonnet"
 ```

@@ -145,7 +145,9 @@ def main():
             "Please set it in your terminal environment and try again:\n"
             "  • PowerShell: [bold white]$env:OPENROUTER_API_KEY='your-key'[/]\n"
             "  • CMD       : [bold white]set OPENROUTER_API_KEY=your-key[/]\n"
-            "  • Linux/macOS: [bold white]export OPENROUTER_API_KEY='your-key'[/]",
+            "  • Linux/macOS (Zsh/Bash): [bold white]export OPENROUTER_API_KEY='your-key'[/]\n"
+            "    * Persist in macOS (Zsh) : [bold white]echo \"export OPENROUTER_API_KEY='your-key'\" >> ~/.zshrc[/]\n"
+            "    * Persist in Linux (Bash): [bold white]echo \"export OPENROUTER_API_KEY='your-key'\" >> ~/.bashrc[/]",
             border_style="red",
             title="Error",
             box=box.ROUNDED,
